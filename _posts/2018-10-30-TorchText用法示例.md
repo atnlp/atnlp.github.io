@@ -19,6 +19,7 @@ tags:
 
 ### 迭代器
 > 迭代器返回模型所需要的处理后的数据.迭代器主要分为Iterator, BucketIerator, BPTTIterator三种。
+
 - Iterator：标准迭代器
 - BucketIerator：相比于标准迭代器，会将类似长度的样本当做一批来处理，因为在文本处理中经常会需要将每一批样本长度补齐为当前批中最长序列的长度，因此当样本长度差别较大时，使用BucketIerator可以带来填充效率的提高。除此之外，我们还可以在Field中通过fix_length参数来对样本进行截断补齐操作。
 - BPTTIterator
@@ -92,9 +93,9 @@ class MyDataset(data.Dataset):
 &nbsp;&nbsp;&nbsp;&nbsp;data.Example返回单个样本，提供了fromCSV和fromJSON等多个方法，可以从多种形式构建Dataset所需的标准数据。
  此外，对于像id这种在模型训练中不需要的特征，在构建Dataset的过程中可以直接使用None来代替。
 
-- 构建MyDataset对象
+&nbsp;&nbsp;&nbsp;&nbsp;构建MyDataset对象
 ![](https://ws3.sinaimg.cn/large/006tNbRwly1fwqc2b2qyej31kw01q3yz.jpg)
-可以查看train的相关信息
+&nbsp;&nbsp;&nbsp;&nbsp;可以查看train的相关信息
 ![](https://ws3.sinaimg.cn/large/006tNbRwly1fwqc1jq85cj31kw06bdhh.jpg)
 
 ## 构建迭代器
