@@ -5,7 +5,6 @@ categories:
  - PyTorch
 tags:
 ---
-<font size='4'>
 
 # TorchText
 > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;最近开始使用PyTorch进行NLP神经网络模型的搭建，发现了torchtext这一文本处理神奇，但是因为nlp的热度远不如cv，对于torchtext介绍的相关博客数量也远不如torchvision。在使用过程中主要参考了[A Comprehensive Introduction to Torchtext](http://mlexplained.com/2018/02/08/a-comprehensive-tutorial-to-torchtext/)和[Language modeling tutorial in torchtext](http://mlexplained.com/2018/02/15/language-modeling-tutorial-in-torchtext-practical-torchtext-part-2/)这两篇博客和[torchtext官方文档](https://torchtext.readthedocs.io/en/latest/index.html)，对于torchtext的基本用法有了大致的了解。在以上两篇博客的基础上，本文主要介绍torchtext中一些更灵活的数据处理方式。
@@ -121,4 +120,3 @@ test_iter = Iterator(test, batch_size=8, device=-1, sort=False, sort_within_batc
 
 ## 完整代码
 - 完整代码见我的github仓库
-</font>
