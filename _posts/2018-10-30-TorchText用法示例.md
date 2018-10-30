@@ -44,6 +44,7 @@ valid_path = "data/valid_one_label.csv"
 test_path = "data/test.csv"
 
 # 定义Dataset
+```python
 class MyDataset(data.Dataset):
 
     def __init__(self, path, text_field, label_field, test=False, aug=False, **kwargs):
