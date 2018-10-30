@@ -112,13 +112,16 @@ test_iter = Iterator(test, batch_size=8, device=-1, sort=False, sort_within_batc
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;我们已经了解到BucketIterator相比Iterator的优势是会自动选取样本长度相似的数据来构建批数据。但是在测试集中一般不想改变样本顺序，因此测试集使用Iterator迭代器来构建。<br>&nbsp;&nbsp;&nbsp;&nbsp;sort_within_batch参数设置为True时，按照sort_key按降序对每个小批次内的数据进行排序。如果我们需要padded序列使用pack_padded_sequence转换为PackedSequence对象时，这是非常重要的，我们知道如果想pack_padded_sequence方法必须将批样本按照降序排列。由此可见，torchtext不仅可以对文本数据进行很方变的处理，还可以很方便的和torchtext的很多内建方法进行结合使用。<br>
 
-- 实验选取的训练集共有25条样本
+&nbsp;&nbsp;&nbsp;&nbsp;实验选取的训练集共有25条样本
 ![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwqcbe2gnfj31kw03bq35.jpg)
-我们接下来可以利用python内建的iter来查看构建的迭代器信息。
+&nbsp;&nbsp;&nbsp;&nbsp;我们接下来可以利用python内建的iter来查看构建的迭代器信息。
 ![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwqc8hn5kqj31kw06zdh9.jpg)
 &nbsp;&nbsp;&nbsp;&nbsp;由输出结果可知，对于每一批数据，迭代器会将样本长度构建为统一的长度，对于第一批数据的comment_text特征，迭代器统一构建成了[71*8]的维度。
+
 ### 批数据的使用
+
 ![](https://ws3.sinaimg.cn/large/006tNbRwgy1fwqceujf6gj31kw0ov0zt.jpg)
+
 &nbsp;&nbsp;&nbsp;&nbsp;使用迭代器构建批数据后，我们可以直接使用python的for循环来遍历，观察输出结果，对于共有25条数据的训练集，torchtext的迭代器将训练集构建成了四批数据。在此基础上我们可以进而将数据喂给模型。
 
 ## 完整代码
