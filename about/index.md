@@ -1,6 +1,6 @@
 ---
 layout: page
-type: 关于本人
+type: About
 ---
 
 
