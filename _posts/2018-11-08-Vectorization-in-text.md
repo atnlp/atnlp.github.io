@@ -22,8 +22,9 @@ tags: NLP Python
      'This is the first document.',
      'This document is the second document.',
      'And this is the third one.',
-     'Is this the first document?']<br>
-可以构建一个长度为9的词表，如下所示
+     'Is this the first document?']
+   
+&nbsp;&nbsp;&nbsp;&nbsp;可以构建一个长度为9的词表，如下所示
 
     {'this': 8,
      'is': 3,
@@ -78,10 +79,9 @@ print(result.toarray())  # array([[0, 0, 0, 1, 0, 0, 0, 0, 1]])
 &nbsp;&nbsp;&nbsp;&nbsp;TF-IDF原本是一种统计方法，用以评估字词对于一个文件集或一个语料库中的其中一份文件的重要程度。这个方法认为，字词的重要性随着它在文件中出现的次数成正比增加，但同时会随着它在语料库中出现的频率成反比下降，其实也就相当于在CountVectorizer的基础上结合整个语料库考虑单词的权重，并不是说这个单词出现次数越多它就越重要。核心思想可用下图来表示：
 ![](http://cloudpicture.oss-cn-hangzhou.aliyuncs.com/18-11-6/66557193.jpg)
 
-1. 词w在文档d中的词频tf (Term Frequency)，即词w在文档d中出现次数count(w, d)和文档d中总词数size(d)的比值：
+1. 词w在文档d中的词频tf (Term Frequency)，即词w在文档d中出现次数count(w, d)和文档d中总词数size(d)的比值：tf(w,d) = count(w, d) / size(d)
 
-2. tf(w,d) = count(w, d) / size(d)
-词w在整个文档集合中的逆向文档频率idf (Inverse Document Frequency)，即文档总数n与词w所出现文件数docs(w, D)比值的对数:
+2. 词w在整个文档集合中的逆向文档频率idf (Inverse Document Frequency)，即文档总数n与词w所出现文件数docs(w, D)比值的对数:
 idf = log(n / docs(w, D))
 
 
@@ -242,7 +242,7 @@ train_lsa = lsa.fit_transform(train_tfidf)
 
 # 测试一个新的文本的主题分布
 test = ['I really like this apple']
-test_tfidf = vectorizer.transform(text)
+test_tfidf = vectorizer.transform(test)
 print(lsa.transform(test_tfidf)) # [[ 0.4033972   0.09513381 -0.04013985]]
 
 ```

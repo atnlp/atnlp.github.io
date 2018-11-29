@@ -72,7 +72,7 @@ class MyDataset(data.Dataset):
                 # Example: Defines a single training or test example.Stores each column of the example as an attribute.
                 examples.append(data.Example.fromlist([None, text, label - 1], fields))
         # 之前是一些预处理操作，此处调用super调用父类构造方法，产生标准Dataset
-        super(GrandDataset, self).__init__(examples, fields, **kwargs)
+        super(MyDataset, self).__init__(examples, fields, **kwargs)
 
     def shuffle(self, text):
         text = np.random.permutation(text.strip().split())
@@ -95,6 +95,8 @@ class MyDataset(data.Dataset):
 
 &nbsp;&nbsp;&nbsp;&nbsp;构建MyDataset对象
 ![](https://ws3.sinaimg.cn/large/006tNbRwly1fwqc2b2qyej31kw01q3yz.jpg)
+&nbsp;&nbsp;&nbsp;&nbsp;因为test数据集没有标签label，必须制定label_field为None
+![](https://ws1.sinaimg.cn/large/006tNbRwgy1fxop6j4owcj31ou01s74p.jpg)
 &nbsp;&nbsp;&nbsp;&nbsp;可以查看train的相关信息
 ![](https://ws3.sinaimg.cn/large/006tNbRwly1fwqc1jq85cj31kw06bdhh.jpg)
 
@@ -180,7 +182,7 @@ weight_matrix = TEXT.vocab.vectors
 embedding.weight.data.copy_(weight_matrix )
 ```
 
-### 一个比较完整的示例
+### 一个相对简要的示例
 
 ```python
 import torch
@@ -209,4 +211,4 @@ def load_data(opt):
 ```
 
 ## 完整代码
-- 完整代码见我的github仓库
+- 完整demo代码见我的github仓库
