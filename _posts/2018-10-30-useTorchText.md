@@ -307,6 +307,10 @@ if __name__ == '__main__':
 
 ## 代码示例
 
+### 本文所涉及内容的完整代码
+
+- 完整demo代码见我的github仓库: https://github.com/atnlp/torchtext-summary
+
 ### 一个使用torchtext预置数据集的例子
 ```python
 import torch
@@ -334,6 +338,3 @@ def load_data(opt):
     print('TEXT.vocab.vectors.size()', text.vocab.vectors.size())
 ```
 
-### 本文所涉及代码的完整代码
-
-- 完整demo代码见我的github仓库
