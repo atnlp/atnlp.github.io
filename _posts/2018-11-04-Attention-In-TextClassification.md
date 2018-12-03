@@ -21,16 +21,17 @@ tags:
         
 ![](http://cloudpicture.oss-cn-hangzhou.aliyuncs.com/18-11-4/75717492.jpg)
 这篇paper从句子和词汇两个角度来对文本分类任务进行考量。
+
 - 在这篇文章中，哪些句子更重要，能够决定它的分类？ 
 - 在这篇文章的某个句子中，哪些词语最重要，能够影响句子在文章里的重要性？
 
-&nbsp;&nbsp;&nbsp;&nbsp;这篇文章引入了context vector的概念，因为对于文本分类任务，缺少了与自动翻译中相类似的目标语言的概念，可以把context vector理解成self-attention中的目标语言。Uw即词语级别的context vector, Us即句子级别的context vector. Uw和Us手动定义，并经神经网络训练来不断迭代。
+&nbsp;&nbsp;&nbsp;&nbsp;这篇文章核心依然是Attention机制中context vector的概念，但是与传统Attention中的context vector又有所不同。对于文本分类任务，缺少了与自动翻译中相类似的目标语言的概念，可以把context vector理解成self-attention中的目标语言。Uw即词语级别的context vector, Us即句子级别的context vector. Uw和Us手动定义，并经神经网络训练来不断迭代。
 
 &nbsp;&nbsp;&nbsp;&nbsp;以词语级别的Attention为例(即上图中的下半部分)，核心公式如下图所示：
 ![](http://cloudpicture.oss-cn-hangzhou.aliyuncs.com/18-11-4/22873750.jpg)
 - 公式一中，Ww 与bw为Attention的权重与bias. bias项可根据具体情况选择是否保留，Uw即词级别的context vector
 - 公式二即对Ut和Uw的softmax过程
-- 公式三级为增加Attention后，对于输出结果各个时间步中的权值大小
+- 公式三即为增加Attention后，输出结果(分类结果)对于输入的各个时间步(词或句子级别的表示)中的权值大小
 
 ## 代码示例
 
