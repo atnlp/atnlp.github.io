@@ -1,12 +1,12 @@
-
 ---
-title: 神经网络机器翻译与Attention机制
+title: 机器翻译与Attention机制
 description: Attention机制在NLP中最早应用于机器翻译中，本文以基于神经网络的机器翻译为例，介绍Seq2Seq模型和Attention机制。
 
 categories:
  - NLP
 tags: NLP Python
 ---
+
 # 神经网络机器翻译
 &nbsp;&nbsp;&nbsp;&nbsp;机器翻译是利用计算机将一种自然语言(源语言)转换为另一种自然语言(目标语言)的过程。近几年随着深度学习的兴起，使用神经网络的翻译系统的性能相比基于短语的翻译系统有了相当大的提升，传统的神经网络机器翻译模型为一个典型的Seq2Seq结构。
 ![](https://ws4.sinaimg.cn/large/006tNbRwgy1fxsrlyq8hwj31gt0u0h9z.jpg)
@@ -66,7 +66,7 @@ tags: NLP Python
 3. 使用了单层神经网络，做一次矩阵乘法再通过一次tanh函数变换，其中将解码器和编码器的隐层状态进行了拼接，v和W都是神经网络学习到的参数。
 
 ### 其他注意力模型
-> (一下内容简单了解即可，一般不会使用)
+> 以下内容简单了解即可，一般不会使用
 
 1. 局部注意力模型
 
