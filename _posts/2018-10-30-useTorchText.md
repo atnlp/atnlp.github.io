@@ -1,16 +1,16 @@
 ---
 title: TorchText用法示例
-description: TorchText的一般用法，灵活的Dataset定义和迭代器使用方法总结。
+description: TorchText的一般用法，灵活的Dataset定义和迭代器使用方法总结。文末附完整代码。
 categories:
  - PyTorch
 tags:
 ---
 
 # TorchText
-> &nbsp;&nbsp;&nbsp;&nbsp;最近开始使用PyTorch进行NLP神经网络模型的搭建，发现了torchtext这一文本处理神器，可以方便的对文本进行预处理，例如截断补长、构建词表等。但是因为nlp的热度远不如cv，对于torchtext介绍的相关博客数量也远不如torchvision。在使用过程中主要参考了[A Comprehensive Introduction to Torchtext](http://mlexplained.com/2018/02/08/a-comprehensive-tutorial-to-torchtext/)和[Language modeling tutorial in torchtext](http://mlexplained.com/2018/02/15/language-modeling-tutorial-in-torchtext-practical-torchtext-part-2/)这两篇博客和[torchtext官方文档](https://torchtext.readthedocs.io/en/latest/index.html)，对于torchtext的基本用法有了大致的了解。在以上两篇博客的基础上，本文对torchtext的使用做一个概括性的总结。
+> &nbsp;&nbsp;&nbsp;&nbsp;最近开始使用PyTorch进行NLP神经网络模型的搭建，发现了torchtext这一文本处理神器，可以方便的对文本进行预处理，例如截断补长、构建词表等。但是因为nlp的热度远不如cv，对于torchtext介绍的相关博客数量也远不如torchvision。在使用过程中主要参考了[A Comprehensive Introduction to Torchtext](http://mlexplained.com/2018/02/08/a-comprehensive-tutorial-to-torchtext/)和[Language modeling tutorial in torchtext](http://mlexplained.com/2018/02/15/language-modeling-tutorial-in-torchtext-practical-torchtext-part-2/)这两篇博客和[torchtext官方文档](https://torchtext.readthedocs.io/en/latest/index.html)，对于torchtext的基本用法有了大致的了解。在以上两篇博客的基础上，本文对torchtext的使用做一个概括性的总结。文末附完整代码。
 
 ## torchtext概述
-从第一篇参考博客中可以发现，torchtext对数据的处理可以概括为Field，Dataset和迭代器这三部分。
+&nbsp;&nbsp;&nbsp;&nbsp;torchtext对数据的处理可以概括为Field，Dataset和迭代器这三部分。
 ### Field对象
 > Field对象指定要如何处理某个字段.
 
@@ -22,7 +22,7 @@ tags:
 
 - Iterator：标准迭代器
 - BucketIerator：相比于标准迭代器，会将类似长度的样本当做一批来处理，因为在文本处理中经常会需要将每一批样本长度补齐为当前批中最长序列的长度，因此当样本长度差别较大时，使用BucketIerator可以带来填充效率的提高。除此之外，我们还可以在Field中通过fix_length参数来对样本进行截断补齐操作。
-- BPTTIterator:
+- BPTTIterator: 基于BPTT(基于时间的反向传播算法)的迭代器，一般用于语言模型中。
 
 ## 使用Dataset类
 &nbsp;&nbsp;&nbsp;&nbsp;实验数据集仍然使用[A Comprehensive Introduction to Torchtext](http://mlexplained.com/2018/02/08/a-comprehensive-tutorial-to-torchtext/)中使用的小批量数据集，为了简化代码，只保留了toxic这一个标签列。
@@ -48,7 +48,7 @@ LABEL = data.Field(sequential=False, use_vocab=False)
 
 - 使用torchtext内置的Dataset构建数据集
 
-torchtext预置的Dataset类的API如下，我们必须至少传入examples和fields这两个参数。examples为由torchtext中的Example对象构造的列表，Example为对数据集中一条数据的抽象。fields可简单理解为每一列数据和Field对象的绑定关系，在下面的代码中将分别用train\_examples和test\_examples来构建训练集和测试集的examples对象，train\_fields和test\_fields数据集的fields对象。
+&nbsp;&nbsp;&nbsp;&nbsp;torchtext预置的Dataset类的API如下，我们必须至少传入examples和fields这两个参数。examples为由torchtext中的Example对象构造的列表，Example为对数据集中一条数据的抽象。fields可简单理解为每一列数据和Field对象的绑定关系，在下面的代码中将分别用train\_examples和test\_examples来构建训练集和测试集的examples对象，train\_fields和test\_fields数据集的fields对象。
 
 > class torchtext.data.Dataset(examples, fields, filter_pred=None)
 
@@ -86,8 +86,8 @@ train = data.Dataset(train_examples, train_fields)
 valid = data.Dataset(valid_examples, valid_fields)
 test = data.Dataset(test_examples, test_fields)
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;data.Example返回单个样本，提供了fromCSV和fromJSON等多个方法，可以从多种形式构建Dataset所需的标准数据。
- 此外，对于像id这种在模型训练中不需要的特征，在构建Dataset的过程中可以直接使用None来代替。
+&nbsp;&nbsp;&nbsp;&nbsp;data.Example返回单个样本，提供了fromCSV和fromJSON等多个方法，可以从多种形式构建Dataset所需的标准数据。<br>
+ &nbsp;&nbsp;&nbsp;&nbsp;此外，对于像id这种在模型训练中不需要的特征，在构建Dataset的过程中可以直接使用None来代替。特别注意的是，对于test中的label，在机器学习比赛中我们不知道最终的测试集的标签，因此此处在构建fields和examples时都相应的设置成了None，如果是在自己划分出来的测试集，此时测试集也有对应的标签label，需要修改对应代码，用对应的Field项替换None.
 
 ## 自定义Dataset类
 > 当构建简单的数据集时，可直接使用torch.text.Dataset来构建，当对原始数据集只进行简单的划分处理时，例如读取数据并划分训练集验证集等操作，也可以直接使用TabularDataset类和split类方法来实现，该类支持读取csv,tsv等格式。但是当我们需要对数据进行更多的预处理时，例如shuffle，dropout等数据增强操作时，自定义Dataset会更灵活。
@@ -195,6 +195,7 @@ test_iter = Iterator(test, batch_size=8, device=-1, sort=False, sort_within_batc
 &nbsp;&nbsp;&nbsp;&nbsp;使用迭代器构建批数据后，我们可以直接使用python的for循环来遍历，观察输出结果，对于共有25条数据的训练集，torchtext的迭代器将训练集构建成了四批数据。在此基础上我们可以进而将数据传入模型。
 
 ## 构建词表
+> 所谓构建词表，即需要给每个单词编码，也就是用数字来表示每个单词，这样才能够传入模型中。
 
 ### 最简单的方式，bulid_vocab()方法中传入用于构建词表的数据集
 
@@ -245,7 +246,7 @@ TEXT.build_vocab(train, vectors=vectors)
 
 ### 在模型中指定Embedding层的权重
 
-在使用预训练好的词向量时，我们需要在神经网络模型的Embedding层中明确地传递嵌入矩阵的初始权重。权重包含在词汇表的vectors属性中。以Pytorch搭建的Embedding层为例：
+&nbsp;&nbsp;&nbsp;&nbsp;在使用预训练好的词向量时，我们需要在神经网络模型的Embedding层中明确地传递嵌入矩阵的初始权重。权重包含在词汇表的vectors属性中。以Pytorch搭建的Embedding层为例：
 
 ```
 # 通过pytorch创建的Embedding层
@@ -253,6 +254,8 @@ embedding = nn.Embedding(2000, 256)
 # 指定嵌入矩阵的初始权重
 weight_matrix = TEXT.vocab.vectors
 embedding.weight.data.copy_(weight_matrix )
+# 指定预训练权重的同时设定requires_grad=True
+# embeddings.weight = nn.Parameter(embeddings, requires_grad=True)
 ```
 
 ## 使用torchtext构建的数据集用于LSTM
@@ -305,13 +308,16 @@ if __name__ == '__main__':
     main()	    
 ```
 
+## 说明
+&nbsp;&nbsp;&nbsp;&nbsp; 除了使用torchtext之外，也可以使用keras中preprocessing包中的相关方法做数据预处理，再使用torch.utils.data.TensorDataset来构造数据集，使用torch.utils.data.DataLoader来构建迭代器。该部分代码改天来更新。
+
 ## 代码示例
 
 ### 本文所涉及内容的完整代码
 
 - 完整demo代码见我的github仓库: https://github.com/atnlp/torchtext-summary
 
-### 一个使用torchtext预置数据集的例子
+### 一个使用torchtext内置数据集的例子
 ```python
 import torch
 from torchtext import data
@@ -337,4 +343,6 @@ def load_data(opt):
     print('len(TEXT.vocab)', len(text.vocab))
     print('TEXT.vocab.vectors.size()', text.vocab.vectors.size())
 ```
+
+
 
