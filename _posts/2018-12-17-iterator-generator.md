@@ -122,7 +122,7 @@ if __name__ == "__main__":
 ```
 #### 分批读取大文件
 
-&nbsp;&nbsp;&nbsp;&nbsp;假设有如下一个场景：有一个500G的大文件，但是该文件只有一行，该文件中使用{|}来作为行的分隔符。如下所示：
+&nbsp;&nbsp;&nbsp;&nbsp;假设有如下一个场景：有一个500G的大文件，但是该文件只有一行，该文件中使用'{|}'来作为行的分隔符。如下所示：
 
 > I am a Student.{|} As food is to the body, so is learning to the mind.{|}Our bodies grow and muscles develop with the intake of adequate nutritious food. {|}Likewise, we should keep learning day by day to maintain our keen mental power and expand our intellectual capacity.{|}Constant learning supplies us with inexhaustible fuel for driving us to sharpen our power of reasoning, analysis, and judgment.
 
