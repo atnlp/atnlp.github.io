@@ -122,9 +122,9 @@ if __name__ == "__main__":
 ```
 #### 分批读取大文件
 
-&nbsp;&nbsp;&nbsp;&nbsp;假设有如下一个场景：有一个500G的大文件，但是该文件只有一行，该文件中使用'{|}'来作为行的分隔符。如下所示：
+&nbsp;&nbsp;&nbsp;&nbsp;假设有如下一个场景：有一个500G的大文件，但是该文件只有一行，该文件中使用'\{\|\}'来作为行的分隔符。如下所示：
 
-> I am a Student.{|} As food is to the body, so is learning to the mind.{|}Our bodies grow and muscles develop with the intake of adequate nutritious food. {|}Likewise, we should keep learning day by day to maintain our keen mental power and expand our intellectual capacity.{|}Constant learning supplies us with inexhaustible fuel for driving us to sharpen our power of reasoning, analysis, and judgment.
+> I am a Student.\{|\} As food is to the body, so is learning to the mind.{|}Our bodies grow and muscles develop with the intake of adequate nutritious food. \{|\}Likewise, we should keep learning day by day to maintain our keen mental power and expand our intellectual capacity.\{|\}Constant learning supplies us with inexhaustible fuel for driving us to sharpen our power of reasoning, analysis, and judgment.
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;假设具有该格式的文件为500G，如果使用readline方法，一行500G的文件一般远超内存容量，此时可以利用生成器来分批读取。read(4096)为读取4096个字符的文件信息，因为4096个字符可能包含多个以{|}划分的批数据，因此通过while newline in buf循环内的内容进行截断处理。
