@@ -13,7 +13,7 @@ tags: Python
 &nbsp;&nbsp;&nbsp;&nbsp;迭代器是访问集合内元素的一种方式，一般用来遍历数据。迭代器和以下标对数据进行访问不同，迭代器提供了一种惰性访问数据的方式。
 
 ### 迭代协议
-&nbsp;&nbsp;&nbsp;&nbsp;实现了魔法方法\_\_iter\_\_的对象即为可迭代对象，例如python中自带的列表list即实现了该方法，因此list对象是可迭代对象，但是list并不是迭代器Interator, 迭代器必须另外实现\_\_next__魔法方法。
+&nbsp;&nbsp;&nbsp;&nbsp;实现了魔法方法\_\_iter\_\_的对象即为可迭代对象，例如python中自带的列表list即实现了该方法，因此list对象是可迭代对象，但是list并不是迭代器Interator。可迭代对象可以通过iter方法来包装成迭代器。
 
 ### 实现迭代器
 &nbsp;&nbsp;&nbsp;&nbsp;在可迭代对象中定义的\_\_iter\_\_ 方法的返回类型必须是一个迭代器对象，在满足此前提的情况下可用iter将可迭代对象包装成一个迭代器。如下例：
@@ -36,7 +36,7 @@ company = Company(["tom", "bob", "jane"])
 my_itor = iter(company)
 
 ```
-  &nbsp;&nbsp;&nbsp;&nbsp;若想将自定义类定义成迭代器，需要实现\_\_iter\_\_魔法方法，并且在该魔法方法中需要返回一个迭代器，迭代器必须另外实现\_\_next\_\_魔法方法，下例中定义了MyIterator迭代器类，该类继承了Iterator，并实现了\_\_next\_\_方法，在该方法内定义了真正返回迭代值的逻辑。<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;若想将自定义类定义成迭代器，在实现\_\_iter\_\_魔法方法之后，除了像上例代码中使用iter函数包装外，还可以通过实现\_\_next\_\_魔法方法来实现。下例中定义了MyIterator迭代器类，该类继承了Iterator，并实现了\_\_next\_\_方法，在该方法内定义了真正返回迭代值的逻辑。<br>
   &nbsp;&nbsp;&nbsp;&nbsp;可能有人会有疑问，为什么不在Company中直接定义\_\_next\_\_魔法方法。让其成为一个迭代器？<br>
   &nbsp;&nbsp;&nbsp;&nbsp;在Company类中除了定义\_\_iter\_\_魔法方法外直接实现\_\_next\_\_魔法方法并不违反python语法，但是这种实现方法违反了迭代器的设计模式，因此下例中分别实现了Company类和MyIterator迭代器类。
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     for item in company:
         print (item)
 ```
-  &nbsp;&nbsp;&nbsp;&nbsp;若没有实现\_\_iter\_\_魔法方法，但是实现了\_\_getitem\_\_魔法方法，也可以调用iter方法。这是因为所有实现了\_\_getitem\_\_魔法方法的对象都可以使用python中的for循环来遍历。因此在使用iter方法时，会优先寻找\_\_iter\_\_魔法方法，若不存在该方法，则会进而寻找\_\_getitem\_\_魔法方法，若仍然不存在，则确定该对象不是可迭代对象。
+  &nbsp;&nbsp;&nbsp;&nbsp;若没有实现\_\_iter\_\_魔法方法，但是实现了\_\_getitem\_\_魔法方法，也可以调用iter方法来包装成迭代器。这是因为所有实现了\_\_getitem\_\_魔法方法的对象都可以使用python中的for循环来遍历。因此在使用iter方法来包装对象时，会优先寻找该对象内有没有\_\_iter\_\_魔法方法，若不存在该方法，则会进而寻找\_\_getitem\_\_魔法方法，若仍然不存在，则确定该对象不是可迭代对象。即无法使用iter方法。
 ## 生成器
 &nbsp;&nbsp;&nbsp;&nbsp;只要定义的函数内有yield关键字，该函数就不再是一个普通的函数，而是一个生成器函数(生成器对象)。生成器也实现了迭代器协议。生成器对象都是迭代器，如下例所示：
 
@@ -94,7 +94,7 @@ print(next(test))  # 1
 
 ### 生成器的应用
 #### 使用生成器从写Company类
-&nbsp;&nbsp;&nbsp;&nbsp;带有yield关键字的函数都为迭代器，那么就可以使用生成器来替换掉上例中MyIterator类的作用，如下所示：
+&nbsp;&nbsp;&nbsp;&nbsp;带有yield关键字的函数都为迭代器，而__iter__方法的返回值需要是一个迭代器，所以可以使用生成器重写Company中的__iter__方法，如下所示：
 
 ```python
 from collections.abc import Iterable, Iterator
@@ -115,10 +115,9 @@ class Company(object):
 
 if __name__ == "__main__":
     company = Company(["tom", "bob", "jane"])
-    # my_itor = iter(company)
-    # print(next(my_itor))
-    print(next(company))
-
+    # Company中没有定义__next__方法，所以需要先使用iter方法包装成一个迭代器，才能使用next方法
+    my_itor = iter(company)
+    print(next(my_itor))
 ```
 #### 分批读取大文件
 
