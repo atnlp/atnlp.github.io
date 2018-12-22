@@ -94,7 +94,7 @@ print(next(test))  # 1
 
 ### 生成器的应用
 #### 使用生成器从写Company类
-&nbsp;&nbsp;&nbsp;&nbsp;带有yield关键字的函数都为迭代器，而__iter__方法的返回值需要是一个迭代器，所以可以使用生成器重写Company中的__iter__方法，如下所示：
+&nbsp;&nbsp;&nbsp;&nbsp;带有yield关键字的函数都为迭代器，可以使用生成器函数从写Company类。在之前的实现中，先定义了\_\_iter\_\_魔法方法，在该方法中，返回了另一个生成器对象(该对象中实现了\_\_next__魔法方法)，所以可以直接使用next方法来遍历。在有了生成器之后，可以使用生成器函数重写该类，在\_\_iter\_\_魔法方法中返回一个迭代器(通过生成器实现)，之后使用iter方法来包装该类的示例，使其变成一个迭代器。如下所示：
 
 ```python
 from collections.abc import Iterable, Iterator
@@ -115,8 +115,9 @@ class Company(object):
 
 if __name__ == "__main__":
     company = Company(["tom", "bob", "jane"])
-    # Company中没有定义__next__方法，所以需要先使用iter方法包装成一个迭代器，才能使用next方法
+    # Company中没有定义__next__方法，先使用iter方法包装成一个迭代器
     my_itor = iter(company)
+    # 自定义的类Company中没有定义__next__魔法方法，但是可以使用next方法
     print(next(my_itor))
 ```
 #### 分批读取大文件
